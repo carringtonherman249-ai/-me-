@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>订单后台管理</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container admin">
+      <section class="card">
+        <h1>订单后台（清晰提取客户信息）</h1>
+        <button id="refreshBtn">刷新订单</button>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>昵称</th><th>字数</th><th>纸张</th><th>字体</th><th>加急</th><th>金额</th><th>时间</th>
+            </tr>
+          </thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </section>
+    </main>
+    <script>
+      async function loadOrders() {
+        const resp = await fetch('/api/orders');
+        const data = await resp.json();
+        const body = document.getElementById('ordersBody');
+        body.innerHTML = '';
+        data.list.forEach((o) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${o.id}</td><td>${o.nickname}</td><td>${o.word_count}</td><td>${o.paper_type}</td><td>${o.font_type}</td><td>${o.urgent ? '是' : '否'}</td><td>¥${o.amount}</td><td>${new Date(o.created_at).toLocaleString()}</td>`;
+          tr.title = `客户文本：\n${o.input_text.slice(0, 300)}\n\nAI草稿：\n${(o.ai_output || '').slice(0, 300)}`;
+          body.appendChild(tr);
+        });
+      }
+      document.getElementById('refreshBtn').addEventListener('click', loadOrders);
+      loadOrders();
+    </script>
+  </body>
+</html>

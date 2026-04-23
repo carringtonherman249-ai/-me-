@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智能写稿下单系统</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg"></div>
+    <main class="container">
+      <section class="card ai-top">
+        <h2>AI 助手（顶部，不干扰填写）</h2>
+        <div class="row">
+          <textarea id="aiPrompt" placeholder="输入AI提示词，如：写一篇关于校园环保宣传的演讲稿"></textarea>
+          <div class="col-right">
+            <button id="aiGenerateBtn">AI生成草稿</button>
+            <small>支持免费模型接入（配置环境变量后可用）。</small>
+          </div>
+        </div>
+        <textarea id="aiOutput" placeholder="AI生成内容会显示在这里"></textarea>
+      </section>
+
+      <section class="card">
+        <h1>客户下单</h1>
+        <div class="form-grid">
+          <label>下单昵称<input id="nickname" maxlength="40" placeholder="请输入昵称" /></label>
+          <label>纸张类型
+            <select id="paperType">
+              <option value="普通纸">纸费 3000字/1元（非A4）</option>
+              <option value="A4">纸费 1000字/1元（A4）</option>
+            </select>
+          </label>
+          <label>字体
+            <select id="fontType">
+              <option value="楷宋体">楷宋体</option>
+              <option value="行草体">行草体</option>
+              <option value="宋楷体">宋楷体（1000字额外+2元）</option>
+            </select>
+          </label>
+          <label class="checkbox"><input type="checkbox" id="urgent" /> 一日内成品（总价×2.5）</label>
+        </div>
+
+        <label class="upload">
+          上传Word或TXT
+          <input type="file" id="fileInput" accept=".txt,.docx" />
+        </label>
+
+        <textarea id="inputText" placeholder="可粘贴纯文本，或先上传 .txt/.docx"></textarea>
+        <div class="meta"><span id="wordCount">字数：0 / 30000</span><span id="amount">预估金额：¥0.00</span></div>
+
+        <button id="submitBtn" class="primary">提交订单</button>
+        <div id="orderResult" class="result" hidden></div>
+        <p class="tip">后台管理页：<a href="/admin.html" target="_blank">/admin.html</a></p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
